@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{%load static %}
+{% block content  %}
+<div class="container mb-5 mt-5">
+    <div class="row d-flex flex-wrap justify-content-center align-items-center">
+        <div class="col-md-5">
+            <h1 class="fw-bold">WelCome To <br> Care SALE</h1>
+        </div>
+        <div class="col-md-5">
+           <img src="{% static 'home.png' %}" alt="">
+        </div>
+    </div>
+</div>
+
+
+
+<div class="d-flex container">
+  {% for cat in category %}
+  <div class="form-check">
+
+      <a class="text-decoration-none text-dark btn btn-outline-danger" href="{% url 'category_wise_car' cat.slug %}">{{cat}}</a>
+  
+  </div>
+  {% endfor %}
+</div>
+<div class="col-10 p-2 container">
+  <h4 class="ps-5 mt-5 mb-5">{{data | length}} result found</h4>
+  <div class="d-flex flex-wrap px-5">
+    {% for car in data%}
+    <div class="col-sm-3 mb-3 mb-sm-0">
+      <div class="card mx-2 my-2">
+        <div class="card-body">
+          <img src="{{car.image.url}}" class="card-img-top" alt="picture">
+          <h5 class="card-title"><a class="text-decoration-none text-dark">{{car.title}}</a></h5>
+          <p class="card-text">{{car.content | truncatewords:10}}</p>
+          <p class="card-text">{{car.price}}</p>
+          <p><span class="fw-bold">Quantity:</span> {{car.quantity}}</p>
+          <p>
+            Brand: 
+            <button class="btn btn-primary btn-sm disabled m-1">
+              {{car.category}}
+            </button>
+          </p>
+          {% if request.user.is_authenticated %}
+          <p><a class="btn btn-success text-decoration-none text-white" href="{% url 'buy_car' car.id %}">Buy Now</a></p>
+          {% endif %}
+          <a href="{% url 'car_details' car.id %}" class="btn btn-warning">View Details</a>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+</div>
+
+
+{% endblock %}
